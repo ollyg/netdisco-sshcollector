@@ -1,10 +1,10 @@
-package Netdisco::SSHCollector::Devices::ACE;
+package App::Netdisco::SSHCollector::Platform::ACE;
 
 # vim: set expandtab tabstop=8 softtabstop=4 shiftwidth=4:
 
 =head1 NAME
 
-Netdisco::SSHCollector::Devices::ACE
+App::Netdisco::SSHCollector::Platform::ACE
 
 =head1 DESCRIPTION
 
@@ -22,16 +22,9 @@ the same context.
 
 use strict;
 use warnings;
-use Data::Dumper;
-use Expect;
 
-sub new {
-    my $proto = shift;
-    my $class = ref($proto) || $proto;
-    my $self  = {};
-    bless ($self, $class);
-    return $self;
-}
+use Moo;
+use Expect;
 
 =head1 PUBLIC METHODS
 
@@ -47,10 +40,9 @@ Returns an array of hashrefs in the format { mac => MACADDR, ip => IPADDR }.
 =cut
 
 sub arpnip{
-
     my ($self, $hostlabel, $ssh, @args) = @_;
 
-    print "$hostlabel $$ arpnip()\n";
+    debug "$hostlabel $$ arpnip()";
 
     my ($pty, $pid) = $ssh->open2pty or die "unable to run remote command";
     my $expect = Expect->init($pty);
@@ -90,8 +82,6 @@ sub arpnip{
     $expect->soft_close();
 
     return @arpentries;
-
-
 }
 
 1;

@@ -14,11 +14,11 @@ Currently, ARP tables can be retrieved from the following device classes:
 
 =over 4
 
-=item * C<Netdisco::SSHCollector::Devices::ACE> - Cisco ACE (Application Control Engine) 
+=item * L<App::Netdisco::SSHCollector::Platform::ACE> - Cisco ACE (Application Control Engine) 
 
-=item * C<Netdisco::SSHCollector::Devices::BigIP> - F5 Networks BigIP
+=item * L<App::Netdisco::SSHCollector::Platform::BigIP> - F5 Networks BigIP
 
-=item * C<Netdisco::SSHCollector::Devices::IOS> - Cisco IOS
+=item * L<App::Netdisco::SSHCollector::Platform::IOS> - Cisco IOS
 
 =back
 
@@ -34,7 +34,7 @@ The following should go into your Netdisco 2 configuration file, "C<<
 =item C<sshcollector>
 
 Data is collected from the machines specified in this setting. The format is a
-list of dictionaries. The keys C<ip>, C<user>, C<password>, and C<devicetype>
+list of dictionaries. The keys C<ip>, C<user>, C<password>, and C<platform>
 are required.  Optionally the C<hostname> key can be used instead of the
 C<ip>. For example:
 
@@ -42,15 +42,15 @@ C<ip>. For example:
    - ip: '192.0.2.1'
      user: oliver
      password: letmein
-     devicetype: IOS
+     platform: IOS
    - hostname: 'core-router.example.com'
      user: oliver
      password: letmein
-     devicetype: IOS
+     platform: IOS
 
-Devicetype is the final part of the classname to be instantiated to query the
-host, e.g. devicetype B<ACE> will be queried using
-C<Netdisco::SSHCollector::Devices::ACE>.
+Platform is the final part of the classname to be instantiated to query the
+host, e.g. platform B<ACE> will be queried using
+C<App::Netdisco::SSHCollector::Platform::ACE>.
 
 If the password is "-", public key authentication will be attempted.
 
@@ -59,9 +59,9 @@ If the password is "-", public key authentication will be attempted.
 =head1 ADDING DEVICES
 
 Additional device classes can be easily integrated just by adding and
-additonal class to the C<Netdisco::SSHCollector::Devices> package.  This class
-must implement an C<arpnip($hostname, $ssh)> method which returns an array of
-hashrefs in the format
+additonal class to the C<App::Netdisco::SSHCollector::Platform> namespace.
+This class must implement an C<arpnip($hostname, $ssh)> method which returns
+an array of hashrefs in the format
 
  @result = ({ ip => IPADDR, mac => MACADDR }, ...) 
 
@@ -232,7 +232,7 @@ sub main {
 sub process {
     my ($hostlabel, $ssh, $args) = @_;
 
-    my $class = "Netdisco::SSHCollector::Devices::".$args->{devicetype};
+    my $class = "App::Netdisco::SSHCollector::Platform::".$args->{platform};
     Module::Load::load $class;
 
     my $device = $class->new();

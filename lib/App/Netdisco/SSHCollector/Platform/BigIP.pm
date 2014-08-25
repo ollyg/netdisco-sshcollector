@@ -1,10 +1,10 @@
-package Netdisco::SSHCollector::Devices::BigIP;
+package App::Netdisco::SSHCollector::Platform::BigIP;
 
 # vim: set expandtab tabstop=8 softtabstop=4 shiftwidth=4:
 
 =head1 NAME
 
-Netdisco::SSHCollector::Devices::BigIP
+NApp::etdisco::SSHCollector::Platform::BigIP
 
 =head1 DESCRIPTION
 
@@ -21,15 +21,8 @@ can't be executed, falls back to the latter.
 
 use strict;
 use warnings;
-use Data::Dumper;
 
-sub new {
-    my $proto = shift;
-    my $class = ref($proto) || $proto;
-    my $self  = {};
-    bless ($self, $class);
-    return $self;
-}
+use Moo;
 
 =head1 PUBLIC METHODS
 
@@ -44,10 +37,9 @@ Returns an array of hashrefs in the format { mac => MACADDR, ip => IPADDR }.
 
 =cut
 sub arpnip {
-
     my ($self, $hostlabel, $ssh, @args) = @_;
 
-    print "$hostlabel $$ arpnip()\n";
+    debug "$hostlabel $$ arpnip()";
 
     my @data = $ssh->capture("show net arp");
     unless (@data){
@@ -69,7 +61,6 @@ sub arpnip {
     }
 
     return @arpentries;
-
 }
 
 1;

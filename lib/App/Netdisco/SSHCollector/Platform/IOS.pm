@@ -1,10 +1,10 @@
-package Netdisco::SSHCollector::Devices::IOS;
+package App::Netdisco::SSHCollector::Platform::IOS;
 
 # vim: set expandtab tabstop=8 softtabstop=4 shiftwidth=4:
 
 =head1 NAME
 
-Netdisco::SSHCollector::Devices::IOS
+App::Netdisco::SSHCollector::Platform::IOS
 
 =head1 DESCRIPTION
 
